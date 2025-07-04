@@ -32,7 +32,7 @@ const Input = ({ value, onChange, label, placeholder, type = 'text' }) => {
           ) : (
             <FaRegEye 
               size={18}
-              className='text-slate-50 cursor-pointer'
+              className='text-slate-500 cursor-pointer'
               onClick={toggleShowPassword} 
             />
           )

@@ -4,6 +4,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { validateEmail } from '../../utils/helper';
 import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
+import { API_PATHS } from '../../utils/apiPaths';
+import axiosInstance from '../../utils/axioxInstance';
+import { UserContext } from '../../context/userContext'; // Adjust the import path as necessary
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -11,7 +14,13 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+
+  const { updateUser } = useContext(UserContext); 
+
+
   const navigate = useNavigate();
+
+  let profilePicUrl = '';
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -31,17 +40,36 @@ const SignUp = () => {
       return;
     }
 
-    try {
-      // Simulate successful signup (replace with actual API call)
-      console.log('Signup data:', { fullName, email, password, profilePic });
-      
-      // FOR TESTING: Force navigation after 1 second
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      navigate('/login'); // This line must execute
-    } catch (err) {
-      setError(err.message || 'Signup failed');
+    setError(null); 
+//sign API call
+    try{
+
+      //upload profile picture if provided
+      if(profilePic){
+        const imgUploadRes = await uploadImage(profilePic);
+        profilePicUrl = imgUploadRes.data.url || ''; 
+      }
+      const response = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
+        fullName, 
+        email,
+        password,
+    });
+      const {token, user} = response.data;
+
+      if(token){
+        localStorage.setItem('token', token);
+        updateUser(user);
+        navigate('/dashboard');
+      }
     }
+    catch(error){
+      if(error.response && error.response.data.message){
+        setError(error.response.data.message);
+      }else{
+        setError('An error occurred. Please try again later.');
+      }
+    }
+
   };
 
   // RETURN SECTION (COMPLETELY UNCHANGED FROM YOUR ORIGINAL)

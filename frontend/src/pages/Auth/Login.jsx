@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { validateEmail } from '../../utils/helper.js'; // Adjust the import path as necessary
+import { API_PATHS } from '../../utils/apiPaths.js';
+import axiosInstance from '../../utils/axioxInstance.js'; // Adjust the import path as necessary
+import Input from '../../components/Inputs/Input.jsx'; // Adjust the import path as necessary
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+
+  const {updateUser} = useContext(UserContext); // Assuming you have a UserContext to manage user state
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -21,8 +28,33 @@ const Login = () => {
       return;
     }
     setError(null);
+
     // Proceed with login
+
+    try{
+    const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+      email,
+      password,
+    });
+    const { token,user } = response.data;
+    if(token){
+      localStorage.setItem('token', token);
+      updateUser(user); 
+      navigate('/dashboard');
+    }
+    
+  }catch(error){
+    if(error.response &&error.response.data.message){
+      setError(error.response.data.message);
+    }else{
+      setError('An error occurred. Please try again later.');
+    }
+  }
   };
+
+
+  
+
 
   return (
     <AuthLayout>
