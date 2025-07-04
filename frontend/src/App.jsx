@@ -11,6 +11,9 @@ import SignUp from "./pages/Auth/SignUp";
 import Home from "./pages/Dashboard/Home";
 import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
+import UserProvider from "./context/userContext"; //
+// 
+//  Adjust the import path as necessary
 
 
 const App = () => {

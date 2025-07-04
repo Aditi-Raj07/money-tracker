@@ -7,6 +7,8 @@ import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
 import { API_PATHS } from '../../utils/apiPaths';
 import axiosInstance from '../../utils/axioxInstance';
 import { UserContext } from '../../context/userContext'; // Adjust the import path as necessary
+import uploadImage from '../../utils/uploadImage'; // Adjust the import path as necessary
+import { useContext } from 'react'; // Import useContext to access UserContext
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -53,6 +55,7 @@ const SignUp = () => {
         fullName, 
         email,
         password,
+        profileImageUrl
     });
       const {token, user} = response.data;
 

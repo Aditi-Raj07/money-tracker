@@ -5,6 +5,10 @@ import { validateEmail } from '../../utils/helper.js'; // Adjust the import path
 import { API_PATHS } from '../../utils/apiPaths.js';
 import axiosInstance from '../../utils/axioxInstance.js'; // Adjust the import path as necessary
 import Input from '../../components/Inputs/Input.jsx'; // Adjust the import path as necessary
+import { UserContext } from '../../context/userContext'; // Adjust the import path as necessary
+import uploadImage from '../../utils/uploadImage.js'; // Adjust the import path as necessary
+import { useContext } from 'react'; // Import useContext to access UserContext
+
 
 
 const Login = () => {
