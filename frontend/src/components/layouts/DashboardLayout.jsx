@@ -4,18 +4,20 @@ import { useContext } from "react";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 
-const DashboardLayout = ({children, activeMenu}) => {
+const DashboardLayout = ({ children, activeMenu }) => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="">
-      <Navbar activeMenu={activeMenu} />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar user={user} activeMenu={activeMenu} />
       {user && (
-        <div className="flex">
-          <div className="max-[1080px] : hidden">
+        <div className="flex pt-16">
+          <div className="hidden lg:block">
             <SideMenu activeMenu={activeMenu} />
           </div>
-          <div className="grow max-5">{children}</div>
+          <div className="flex-1 p-4 lg:p-8 overflow-auto">
+            <div className="max-w-7xl mx-auto">{children}</div>
+          </div>
         </div>
       )}
     </div>
